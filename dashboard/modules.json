@@ -1,0 +1,13 @@
+[
+    {
+      "name": "text_uppercase_gradio",
+      "script": "/home/krishna/commune/dashboard/text_uppercase_gradio.py",
+      "description": "text_uppercase_gradio"
+    },
+    {
+      "name": "Module 2",
+      "script": "module2.py",
+      "description": "Description of Module 2"
+    }
+  ]
+  

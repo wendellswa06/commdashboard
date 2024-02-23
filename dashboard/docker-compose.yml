@@ -1,0 +1,10 @@
+version: '3'
+services:
+  module1:
+    build: ./module1
+    ports:
+      - "5001:80"
+  module2:
+    build: ./module2
+    ports:
+      - "5002:80"

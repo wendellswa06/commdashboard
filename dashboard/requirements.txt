@@ -1,0 +1,24 @@
+streamlit
+gradio
+flask
+diffusers
+imageio
+replicate
+langchain_community
+langchain_openai
+langchain
+scikit-learn
+tensorflow
+mediapy
+image-tools
+imageio[ffmpeg]
+easyocr
+onnxruntime
+bs4
+python-dotenv
+duckduckgo-search
+sentence_transformers
+# audiocraft
+pysqlite3-binary
+# datasets
+peft
