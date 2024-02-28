@@ -1,9 +1,10 @@
 import streamlit as st
+import pandas as pd
+import streamlit.components.v1 as components
 import subprocess
 import os
 import signal
 import time
-import asyncio
 
 # Dictionary to keep track of Gradio app processes
 
@@ -15,7 +16,7 @@ if 'processes' not in st.session_state:
     st.session_state.processes = {}
 
 processes = {}
-st.set_page_config(layout="wide", page_title="Commune Module Dashboard", page_icon=":ðŸª:")
+st.set_page_config(layout="wide", page_title="Commune Module Dashboard", page_icon=":🪐:")
 
 ms = st.session_state
 
@@ -58,14 +59,18 @@ if ms.themes["refreshed"] == False:
   ms.themes["refreshed"] = True
   st.rerun()
 
+#end code for theme color change
+
+
 # Function to get the command for launching a Gradio app
 def get_command(app_number):
-    python_executable = "c"  # Adjust this path to your Python interpreter
+    python_executable = "c"  # Adjust this path to your Commune interpreter
     return [python_executable, modulelist[app_number-1], 'gradio']
 
 # Launch Gradio app in a separate process
-async def launch_gradio_app_async(app_number):   
-    # global processes
+def launch_gradio_app(app_number):   
+        
+   # global processes
     print('Stopping previous Gradio apps') 
     for process in st.session_state.processes.values():
         os.kill(process.pid, signal.SIGTERM)
@@ -87,22 +92,24 @@ async def launch_gradio_app_async(app_number):
     process = subprocess.Popen(command)
     alert= st.warning("Launching " + command[1] + " UI...")
     
-    st.session_state.processes[app_number] = process
     
+    st.session_state.processes[app_number] = process
+# st.success(f"Model {app_number} is starting... Check console/terminal for the URL.")
     while not os.path.exists("tmp.txt"):
-        await asyncio.sleep(1)  
+        time.sleep(1)  
     
     with open("tmp.txt", "r") as file:
         server_address = file.read()
 
-    time.sleep(1) # Wait for 1 second
+    #if os.path.exists('tmp.txt'):
+        #os.remove('tmp.txt')
+    time.sleep(1) # Wait for 1 seconds
     print(f"server_address: {server_address}")
     alert.empty()
     st.markdown(f"Model {command[1][6:]} is starting... Access it at: {server_address}")
     st.markdown(f'<div><iframe src="{server_address}" width="100%" style="height: 100vh" ></iframe><div>', unsafe_allow_html=True)
-
 # Stop a running Gradio app
-async def stop_gradio_app_async(app_number):
+def stop_gradio_app(app_number):
     global processes
     if app_number in processes:
         process = processes.pop(app_number)
@@ -112,19 +119,20 @@ async def stop_gradio_app_async(app_number):
         st.warning(f"Model {app_number} is not running.")
 
 # Streamlit UI
-async def main():
-    st.title("Gradio Model Launcher")
-    st.sidebar.title("Module Select")
-    app_choice = st.sidebar.selectbox("Choose a Gradio app to manage:", ["Select", *modulenamelist])
-    if app_choice != "Select":
-        app_number = modulenamelist.index(app_choice) + 1
-        if st.sidebar.button(f"Launch {app_choice}"):
-            await launch_gradio_app_async(app_number)
-        if st.sidebar.button(f"Stop {app_choice}"):
-            await stop_gradio_app_async(app_number)
-    else:
-        st.header(f"Welcome Module")
-        st.text(f"select Any Module on the dropdown")
+st.title("Gradio Model Launcher")
+st.sidebar.title("Module Select")
+app_choice = st.sidebar.selectbox("Choose a Gradio app to manage:", ["Select", *modulenamelist])
+if app_choice != "Select":
+    app_number = modulenamelist.index(app_choice) + 1
+    if st.sidebar.button(f"Launch {app_choice}"):
+        launch_gradio_app(app_number)
+    # with col2:
+    if st.sidebar.button(f"Stop {app_choice}"):
+        stop_gradio_app(app_number)
+else:
+    st.header(f"Welcome Module")
+    st.text(f"select Any Module on the dropdown")
+    
 
-if __name__ == "__main__":
-    asyncio.run(main())
+     
+
