@@ -9,6 +9,7 @@ import os
 import sys
 from huggingface_hub import snapshot_download
 from image_tools.sizes import resize_and_crop
+from functools import lru_cache
 
 os.system("git clone https://github.com/google-research/frame-interpolation")
 sys.path.append("frame-interpolation")
@@ -95,7 +96,7 @@ class ModelImage2video(c.Module):
         for i in range(1, len(resized_frames)):
             input_frames.append(f"resized_img{i+1}.png")
 
-        frames = list(util.interpolate_recursively_from_files(input_frames, times_to_interpolate, interpolator))
+        frames = tuple(util.interpolate_recursively_from_files(input_frames, times_to_interpolate, interpolator))
 
         mediapy.write_video("out.mp4", frames, fps=fps)
         

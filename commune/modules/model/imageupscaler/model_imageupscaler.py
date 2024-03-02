@@ -3,6 +3,7 @@ import numpy as np
 import cv2
 import onnxruntime
 import gradio as gr
+from functools import lru_cache
 
 class ModelImageupscaler(c.Module):
     def __init__(self, config = None, **kwargs):
@@ -12,7 +13,7 @@ class ModelImageupscaler(c.Module):
         c.print(self.config.sup)
         c.print(self.config, 'This is the config, it is a Munch object')
         return x + y
-
+    
     def pre_process(self, img: np.array) -> np.array:
         # H, W, C -> C, H, W
         img = np.transpose(img[:, :, 0:3], (2, 0, 1))
@@ -20,14 +21,12 @@ class ModelImageupscaler(c.Module):
         img = np.expand_dims(img, axis=0).astype(np.float32)
         return img
 
-
     def post_process(self, img: np.array) -> np.array:
         # 1, C, H, W -> C, H, W
         img = np.squeeze(img)
         # C, H, W -> H, W, C
         img = np.transpose(img, (1, 2, 0))[:, :, ::-1].astype(np.uint8)
         return img
-
 
     def inference(self, model_path: str, img_array: np.array) -> np.array:
         options = onnxruntime.SessionOptions()
@@ -39,14 +38,12 @@ class ModelImageupscaler(c.Module):
 
         return ort_outs[0]
 
-
     def convert_pil_to_cv2(self, image):
         # pil_image = image.convert("RGB")
         open_cv_image = np.array(image)
         # RGB to BGR
         open_cv_image = open_cv_image[:, :, ::-1].copy()
         return open_cv_image
-
 
     def upscale(self, image, model):
         model_path = f"../commune/modules/model/imageupscaler/models/modelx4.ort"

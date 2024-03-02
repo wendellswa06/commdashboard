@@ -8,6 +8,8 @@ from io import BytesIO
 import base64
 import os
 
+from functools import lru_cache
+
 languages = [
     ("English",	"en"),
     ("Abaza",	"abq"),
@@ -102,6 +104,7 @@ class OcrModel(c.Module):
     def __init__(self, api_key: str = None, cache_key: bool = True):
         config = self.set_config(kwargs=locals())
 
+    @lru_cache(maxsize=2)
     def set_api_key(self, api_key: str, cache: bool = True):
         if api_key == None:
             api_key = self.get_api_key()
@@ -112,6 +115,7 @@ class OcrModel(c.Module):
 
         assert isinstance(api_key, str)
 
+    @lru_cache(maxsize=32)
     def readtext(self, image, lang_list = ['en'], decoder = 'greedy', beamWidth= 5, batch_size = 1,
                  workers = 0, allowlist = None, blocklist = None, detail = 1,
                  rotation_info = None, paragraph = False, min_size = 20,
@@ -143,6 +147,7 @@ class OcrModel(c.Module):
 
         return result
 
+    @lru_cache(maxsize=32)
     def detect(self, image, lang_list = ['en'], min_size = 20, text_threshold = 0.7, low_text = 0.4,\
                link_threshold = 0.4,canvas_size = 2560, mag_ratio = 1.,\
                slope_ths = 0.1, ycenter_ths = 0.5, height_ths = 0.5,\
@@ -179,6 +184,7 @@ class OcrModel(c.Module):
 
         return result
 
+    @lru_cache(maxsize=32)
     def recognize(self, image, lang_list = ['en'], horizontal_list=None, free_list=None,\
                   decoder = 'greedy', beamWidth= 5, batch_size = 1,\
                   workers = 0, allowlist = None, blocklist = None, detail = 1,\

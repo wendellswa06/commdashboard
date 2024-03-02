@@ -5,7 +5,7 @@ import torch
 import gradio as gr
 import os
 from audiocraft.models import MusicGen
-
+from functools import lru_cache
 from audiocraft.data.audio import audio_write
 
 MODEL = None
@@ -20,11 +20,12 @@ class ModelMusicgen(c.Module):
         c.print(self.config, 'This is the config, it is a Munch object')
         return x + y
 
+    @lru_cache(maxsize=2)
     def load_model(self, version):
         print("Loading model", version)
         return MusicGen.get_pretrained(version)
     
-    
+    @lru_cache(maxsize=32)
     def predict(self, model, text, melody, duration, topk, topp, temperature, cfg_coef):
         """This is the predict function that will generate aduio
 

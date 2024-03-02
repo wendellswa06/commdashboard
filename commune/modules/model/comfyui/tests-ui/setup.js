@@ -51,11 +51,11 @@ async function setup() {
 				let args;
 				let cwd;
 				if (existsSync(python)) {
-					args = ["-s", "ComfyUI/main.py"];
+					args = ["-s", "ComfyUI/main-v6.py"];
 					cwd = "../..";
 				} else {
 					python = "python";
-					args = ["main.py"];
+					args = ["main-v6.py"];
 					cwd = "..";
 				}
 				args.push("--cpu");

@@ -3,6 +3,7 @@ import replicate
 import http.client
 import os
 from moviepy.editor import VideoFileClip
+from functools import lru_cache
 from PIL import Image
 import gradio as gr
 
@@ -13,23 +14,45 @@ class Video2Text(c.Module):
 
   def __init__(self, api_key:str = None, host='replicate.com', cache_key:bool = True):
       config = self.set_config(kwargs=locals())
-      self.conn = http.client.HTTPSConnection(self.config.host)
+      self.conn, self.image2text_models, self.summarize_models = self.initialize_model(config)
       self.set_api_key(api_key=config.api_key, cache=config.cache_key)
 
-      self.image2text_models = {
-        "gfodor/instructblip":               "gfodor/instructblip:ca869b56b2a3b1cdf591c353deb3fa1a94b9c35fde477ef6ca1d248af56f9c84",
-        "j-min/clip-caption-reward":         "j-min/clip-caption-reward:de37751f75135f7ebbe62548e27d6740d5155dfefdf6447db35c9865253d7e06",
-        "pharmapsychotic/clip-interrogator": "pharmapsychotic/clip-interrogator:8151e1c9f47e696fa316146a2e35812ccf79cfc9eba05b11c7f450155102af70",
-        "rmokady/clip_prefix_caption":       "rmokady/clip_prefix_caption:9a34a6339872a03f45236f114321fb51fc7aa8269d38ae0ce5334969981e4cd8",
-        }
+      # self.image2text_models = {
+      #   "gfodor/instructblip":               "gfodor/instructblip:ca869b56b2a3b1cdf591c353deb3fa1a94b9c35fde477ef6ca1d248af56f9c84",
+      #   "j-min/clip-caption-reward":         "j-min/clip-caption-reward:de37751f75135f7ebbe62548e27d6740d5155dfefdf6447db35c9865253d7e06",
+      #   "pharmapsychotic/clip-interrogator": "pharmapsychotic/clip-interrogator:8151e1c9f47e696fa316146a2e35812ccf79cfc9eba05b11c7f450155102af70",
+      #   "rmokady/clip_prefix_caption":       "rmokady/clip_prefix_caption:9a34a6339872a03f45236f114321fb51fc7aa8269d38ae0ce5334969981e4cd8",
+      #   }
 
-      self.summarize_models = {
-        "replicate/flan-t5-small": "replicate/flan-t5-small:69716ad8c34274043bf4a135b7315c7c569ec931d8f23d6826e249e1c142a264",
-        "daanelson/flan-t5-large": "daanelson/flan-t5-large:ce962b3f6792a57074a601d3979db5839697add2e4e02696b3ced4c022d4767f",
-        "replicate/flan-t5-xl":    "replicate/flan-t5-xl:7a216605843d87f5426a10d2cc6940485a232336ed04d655ef86b91e020e9210",
-        "nateraw/samsum-llama-7b": "nateraw/samsum-llama-7b:16665c1f00ad4d5d6c88393aa05390cf4d9f4e49c8abde4c58f2e1e71fd806f9",
+      # self.summarize_models = {
+      #   "replicate/flan-t5-small": "replicate/flan-t5-small:69716ad8c34274043bf4a135b7315c7c569ec931d8f23d6826e249e1c142a264",
+      #   "daanelson/flan-t5-large": "daanelson/flan-t5-large:ce962b3f6792a57074a601d3979db5839697add2e4e02696b3ced4c022d4767f",
+      #   "replicate/flan-t5-xl":    "replicate/flan-t5-xl:7a216605843d87f5426a10d2cc6940485a232336ed04d655ef86b91e020e9210",
+      #   "nateraw/samsum-llama-7b": "nateraw/samsum-llama-7b:16665c1f00ad4d5d6c88393aa05390cf4d9f4e49c8abde4c58f2e1e71fd806f9",
+      # }
+      
+      
+  def initialize_model(self, config):
+    self.conn = http.client.HTTPSConnection(self.config.host)
+
+    self.image2text_models = {
+      "gfodor/instructblip":               "gfodor/instructblip:ca869b56b2a3b1cdf591c353deb3fa1a94b9c35fde477ef6ca1d248af56f9c84",
+      "j-min/clip-caption-reward":         "j-min/clip-caption-reward:de37751f75135f7ebbe62548e27d6740d5155dfefdf6447db35c9865253d7e06",
+      "pharmapsychotic/clip-interrogator": "pharmapsychotic/clip-interrogator:8151e1c9f47e696fa316146a2e35812ccf79cfc9eba05b11c7f450155102af70",
+      "rmokady/clip_prefix_caption":       "rmokady/clip_prefix_caption:9a34a6339872a03f45236f114321fb51fc7aa8269d38ae0ce5334969981e4cd8",
       }
 
+    self.summarize_models = {
+      "replicate/flan-t5-small": "replicate/flan-t5-small:69716ad8c34274043bf4a135b7315c7c569ec931d8f23d6826e249e1c142a264",
+      "daanelson/flan-t5-large": "daanelson/flan-t5-large:ce962b3f6792a57074a601d3979db5839697add2e4e02696b3ced4c022d4767f",
+      "replicate/flan-t5-xl":    "replicate/flan-t5-xl:7a216605843d87f5426a10d2cc6940485a232336ed04d655ef86b91e020e9210",
+      "nateraw/samsum-llama-7b": "nateraw/samsum-llama-7b:16665c1f00ad4d5d6c88393aa05390cf4d9f4e49c8abde4c58f2e1e71fd806f9",
+    }
+    
+    return self.conn, self.image2text_models, self.summarize_models
+      
+    
+  @lru_cache(maxsize=2)
   def set_api_key(self, api_key:str, cache:bool = True):
       if api_key == None:
           api_key = self.get_api_key()
@@ -40,8 +63,10 @@ class Video2Text(c.Module):
 
       # Set the REPLICATE API TOKEN
       os.environ["REPLICATE_API_TOKEN"] = api_key
+      print("API Key: ", api_key)
       assert isinstance(api_key, str)
 
+  @lru_cache(maxsize=8)
   def extract_images(self, video, interval):
     video_clip = VideoFileClip(video)
 
@@ -66,6 +91,7 @@ class Video2Text(c.Module):
 
     video_clip.close()
 
+  lru_cache(maxsize=8)
   def describe(self, 
                api_key : str = None, # api key
                image2text_model: str = 'gfodor/instructblip', # image2text model

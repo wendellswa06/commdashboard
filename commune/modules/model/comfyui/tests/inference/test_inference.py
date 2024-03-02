@@ -154,7 +154,7 @@ class TestInference:
     def _server(self, args_pytest):
         # Start server
         p = subprocess.Popen([
-                'python','main.py', 
+                'python','main-v6.py',
                 '--output-directory', args_pytest["output_dir"],
                 '--listen', args_pytest["listen"],
                 '--port', str(args_pytest["port"]),

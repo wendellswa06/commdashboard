@@ -7,6 +7,7 @@ from .src.genetic_algorithm import evolve
 from .src.objective_function import names, SCALE_NAMES
 import requests
 import gradio as gr
+from functools import lru_cache
 
 file_list = ['Noize_Filter.wav', 'Chorus101.wav', 'Chunky.wav', 'ShoppingAB.wav', 'Joiner.wav', 'Mo_Chop.wav', 'L-R.wav', 'Eko_Creak.wav', 'Shorty.wav', 'MachineMan.wav', 'Moodie.wav', 'Tale_of_2.wav', 'Tok.wav', 'Chopper.wav', 'bIZZER.wav', 'ShoppingB.wav', 'Boingg.wav', 'Farmer.wav', 'sUBTLE_aRP.wav', 'FilteredSH.wav', 'ShoppingA.wav', 'Burning_Buzzer.wav', 'Slidey101.wav', 'Chunkz.wav']
 
@@ -26,7 +27,11 @@ class MusicMixer(c.Module):
 
         if len(os.listdir(input_dir)) == len(file_list):
             return
+        
+        self.download_chords()
 
+    @lru_cache(maxsize=2)
+    def download_chords():  
         print('downloading...')
         print(f'\r{0}/{len(file_list)} files downloaded', end=' ')
 
@@ -45,7 +50,9 @@ class MusicMixer(c.Module):
             print(f'\r{downlaoded}/{len(file_list)} files downloaded', end=' ')
             # sys.stdout.flush()
         print('\ndownload completed.')
-
+            
+    
+    @lru_cache(maxsize=32)
     def generate(self, desired_chord = 'C_MAJOR',
                  desired_scale = 'C_MAJOR',
                  desired_generations = 1,

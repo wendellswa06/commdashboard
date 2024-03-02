@@ -63,8 +63,8 @@ if ms.themes["refreshed"] == False:
 
 # Function to get the command for launching a Gradio app
 def get_command(app_number):
-    python_executable = "c"  # Adjust this path to your Python interpreter
-    return [python_executable, modulelist[app_number - 1], 'gradio']
+    python_executable = "python"  # Assuming Python is in PATH
+    return [python_executable, "-m", modulelist[app_number - 1], 'gradio']
 
 
 # Define a function to launch Gradio app
@@ -85,7 +85,8 @@ async def launch_gradio_app(app_number):
         print("Error removing folder:", e)
 
     # Launch Gradio app as a subprocess
-    process = await asyncio.create_subprocess_exec(*command)
+    process = await asyncio.create_subprocess_exec(*command, stdout=asyncio.subprocess.PIPE,
+                                                   stderr=asyncio.subprocess.PIPE)
     st.session_state.processes[app_number] = process
 
     # Wait for the server to start
@@ -115,6 +116,8 @@ async def stop_all_gradio_apps():
     process_keys = list(st.session_state.processes.keys())
     for app_number in process_keys:
         await stop_gradio_app(app_number)
+        
+    st.session_state.processes.clear()
 # Define main function
 async def main():
     st.title("Gradio Model Launcher")

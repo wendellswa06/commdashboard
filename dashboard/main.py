@@ -3,10 +3,8 @@ import subprocess
 import os
 import signal
 import time
-import asyncio
 
 # Dictionary to keep track of Gradio app processes
-
 modulelist = ['model.text2image', 'model.image2image', 'model.image2video', 'model.text2video', 'model.yolo', 'model.video2text', 'model.image2text', 'model.vectorstore', 'model.stabletune', 'model.music_mixer', 'model.ocr', 'model.musicgen', 'model.stock', 'model.sentence', 'model.langchain_agent', 'model.imageupscaler']
 
 modulenamelist = [element.split('.')[1] for element in modulelist]
@@ -60,11 +58,11 @@ if ms.themes["refreshed"] == False:
 
 # Function to get the command for launching a Gradio app
 def get_command(app_number):
-    python_executable = "c"  # Adjust this path to your Python interpreter
-    return [python_executable, modulelist[app_number-1], 'gradio']
+    python_executable = "python"  # Adjust this path to your Python interpreter
+    return [python_executable, "-m", modulelist[app_number-1], 'gradio']
 
 # Launch Gradio app in a separate process
-@st.cache_resource
+@st.cache(allow_output_mutation=True)
 def launch_gradio_app(app_number):   
     command = get_command(app_number)
     if app_number in processes:
@@ -80,7 +78,7 @@ def launch_gradio_app(app_number):
         print("Error removing folder:", e)
     
     # Launch Gradio app as a subprocess
-    process = subprocess.Popen(command)
+    process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     processes[app_number] = process
 
     # Wait for the server to start
@@ -96,7 +94,7 @@ def launch_gradio_app(app_number):
 def stop_gradio_app(app_number):
     if app_number in processes:
         process = processes.pop(app_number)
-        os.kill(process.pid, signal.SIGTERM)
+        process.kill()
         st.success(f"Model {app_number} has been stopped.")
     else:
         st.warning(f"Model {app_number} is not running.")

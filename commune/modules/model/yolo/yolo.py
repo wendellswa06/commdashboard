@@ -4,15 +4,29 @@ import cv2
 from PIL import Image
 import gradio as gr
 import commune as c
+from functools import lru_cache
 
 class Yolo(c.Module):
 
   def __init__(self, cache_key:bool = True):
+    # self.detectModel = YOLO("yolov8n.pt")
+    # self.segmentModel = YOLO("yolov8n-seg.pt")
+    # self.classifyModel = YOLO("yolov8n-cls.pt")
+    # self.poseModel = YOLO("yolov8n-pose.pt")
+    
+    self.detectModel, self.segmentModel, self.classifyModel, self.poseModel = self.initialize_model()
+    
+    
+  @lru_cache(maxsize=2)
+  def initialize_model(self):
     self.detectModel = YOLO("yolov8n.pt")
     self.segmentModel = YOLO("yolov8n-seg.pt")
     self.classifyModel = YOLO("yolov8n-cls.pt")
     self.poseModel = YOLO("yolov8n-pose.pt")
+    
+    return self.detectModel, self.segmentModel, self.classifyModel, self.poseModel
 
+  @lru_cache(maxsize=2)
   def set_api_key(self, api_key:str, cache:bool = True):
     if api_key == None:
         api_key = self.get_api_key()
@@ -24,6 +38,7 @@ class Yolo(c.Module):
     assert isinstance(api_key, str)
 
   # identifying the location and class of objects in an image
+  @lru_cache(maxsize=2)
   def detect(self, image: str = "test_image.png"):
     results = self.detectModel(image)
 
@@ -42,6 +57,7 @@ class Yolo(c.Module):
     return response
   
   # identifying individual objects in an image and segmenting them from the rest of the image.
+  @lru_cache(maxsize=2)
   def segment(self, image: str = "test_image.png"):
     results = self.segmentModel(image)
 
@@ -59,6 +75,7 @@ class Yolo(c.Module):
     return response
   
   # classifying an entire image into one of a set of predefined classes.
+  @lru_cache(maxsize=2)
   def classify(self, image: str = "test_image.png"):
     results = self.classifyModel(image)
 
@@ -75,6 +92,7 @@ class Yolo(c.Module):
     return response
   
   # identifying the location of specific points in an image, usually referred to as keypoints.
+  @lru_cache(maxsize=2)
   def pose(self, image: str = "test_image.png"):
     results = self.poseModel(image)
 

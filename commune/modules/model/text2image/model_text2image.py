@@ -2,25 +2,32 @@ import commune as c
 from diffusers import DiffusionPipeline
 import gradio as gr
 import torch
+from functools import lru_cache
 
 
 class ModelText2image(c.Module):
     """
     To use Text2Image the users can make image from the prompt.
     """
-    def __init__(self, config = None, basemodel: str = 'admruul/anything-v3.0', **kwargs):
+
+    def __init__(self, config=None, basemodel: str = 'admruul/anything-v3.0', **kwargs):
         self.set_config(config, kwargs=kwargs)
         self.basemodel = basemodel
-        self.pipeline = DiffusionPipeline.from_pretrained(self.basemodel, torch_dtype=torch.float16)        
+        self.pipeline = self.initialize_model(self.basemodel)
         self.pipeline.to("cuda")
 
-    def call(self, x:int = 1, y:int = 2) -> int:
+    @lru_cache(maxsize=4)
+    def initialize_model(self, basemodel):
+        return DiffusionPipeline.from_pretrained(basemodel, torch_dtype=torch.float16)
+
+    def call(self, x: int = 1, y: int = 2) -> int:
         c.print(self.config.sup)
         c.print(self.config, 'This is the config, it is a Munch object')
         return x + y
-    
 
-    def generate(self, basemodel='admruul/anything-v3.0', Prompt='a cat sitting on the chair', SaveFileName="./newimage"):
+    @lru_cache(maxsize=8)  # Cache image generation
+    def generate(self, basemodel='admruul/anything-v3.0', Prompt='a cat sitting on the chair',
+                 SaveFileName="./newimage"):
         """
         Creates image from a given prompt.
 
@@ -31,14 +38,13 @@ class ModelText2image(c.Module):
 
         """
         self.basemodel = basemodel
-        self.pipeline = DiffusionPipeline.from_pretrained(self.basemodel, torch_dtype=torch.float16)        
+        self.pipeline = self.initialize_model(self.basemodel)
         self.pipeline.to("cuda")
 
-        image=self.pipeline(Prompt).images[0]
+        image = self.pipeline(Prompt).images[0]
         image.save(f"{SaveFileName}.jpg")
         c.print(f"New image created. {SaveFileName}.jpg")
         return image
-
 
     def gradio(self):
         """
@@ -48,8 +54,8 @@ class ModelText2image(c.Module):
             with gr.Row():
                 with gr.Column():
                     model_input = gr.Textbox(
-                        value='admruul/anything-v3.0', 
-                        label='Model Select https://huggingface.co/models?other=diffusers:StableDiffusionPipeline&sort=trending', 
+                        value='admruul/anything-v3.0',
+                        label='Model Select https://huggingface.co/models?other=diffusers:StableDiffusionPipeline&sort=trending',
                         placeholder='Type in the base model name-hubname/modelname',
                         interactive=True,
                     )
@@ -69,9 +75,7 @@ class ModelText2image(c.Module):
                     interactive=False,
                     visible=True,
                 )
-            
-            
+
             submit_btn.click(self.generate, inputs=[model_input, prompt_input, savefilename_input], outputs=[image_box])
 
-            
         demo.launch(share=True)
