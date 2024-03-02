@@ -763,8 +763,8 @@ class Stabletune(c.Module):
                                                                             interactive=True, visible=True, scale=1,
                                                                             allow_custom_value=True)
                                         # db_local = gr.Textbox(label='Training dataset directory', interactive=True, visible=True, scale=1)
-                                        db_local = gr.Dropdown(sorted(os.listdir("./data")), label="Train Dataset Directory",
-                                                                            value=sorted(os.listdir("./data"))[0] if training_base_model_names else None,
+                                        db_local = gr.Dropdown(sorted(os.listdir("/home/dev/commdashboard/commune/modules/model/stabletune/data")), label="Train Dataset Directory",
+                                                                            value=sorted(os.listdir("/home/dev/commdashboard/commune/modules/model/stabletune/data"))[0] if training_base_model_names else None,
                                                                             interactive=True, visible=False, scale=1,
                                                                             allow_custom_value=True)
                             with gr.Group():

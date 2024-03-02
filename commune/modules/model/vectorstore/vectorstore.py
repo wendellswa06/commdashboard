@@ -14,7 +14,7 @@ from sentence_transformers import SentenceTransformer
 import requests
 import gradio as gr
 from dotenv import load_dotenv
-
+from bs4 import BeautifulSoup
 
 __import__('pysqlite3')
 import sys
