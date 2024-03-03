@@ -19,6 +19,7 @@ MAX_NUM_FRAMES = int(os.getenv('MAX_NUM_FRAMES', '200'))
 DEFAULT_NUM_FRAMES = min(MAX_NUM_FRAMES,
                          int(os.getenv('DEFAULT_NUM_FRAMES', '16')))
 
+
 class ModelText2video(c.Module):
     """
     ModelText2video is a class that allows us to make video from the user prompt
@@ -26,19 +27,19 @@ class ModelText2video(c.Module):
     so we want initialize it once and then reuse the user's convert
     """
 
-    def __init__(self, config = None, **kwargs):
+    def __init__(self, config=None, **kwargs):
         """
         Initialize the damo-vilab/text-to-video-ms-1.7b model.
         """
         self.set_config(config, kwargs=kwargs)
         self.pipe = DiffusionPipeline.from_pretrained('damo-vilab/text-to-video-ms-1.7b',
-                                         torch_dtype=torch.float16,
-                                         variant='fp16')
+                                                      torch_dtype=torch.float16,
+                                                      variant='fp16')
         self.pipe.scheduler = DPMSolverMultistepScheduler.from_config(self.pipe.scheduler.config)
         self.pipe.enable_model_cpu_offload()
         self.pipe.enable_vae_slicing()
 
-    def call(self, x:int = 1, y:int = 2) -> int:
+    def call(self, x: int = 1, y: int = 2) -> int:
         c.print(self.config.sup)
         c.print(self.config, 'This is the config, it is a Munch object')
         return x + y
@@ -47,11 +48,10 @@ class ModelText2video(c.Module):
         out_file = tempfile.NamedTemporaryFile(suffix='.mp4', delete=False, dir='./')
         print(out_file.name)
         writer = imageio.get_writer(out_file.name, format='FFMPEG', fps=fps)
-        for frame in frames:
+        for frame in frames[0]:
             writer.append_data(frame)
         writer.close()
         return out_file.name
-
 
     def generate(self, prompt: str, seed: int, num_frames: int,
                  num_inference_steps: int) -> str:
@@ -66,9 +66,9 @@ class ModelText2video(c.Module):
             seed = random.randint(0, 1000000)
         generator = torch.Generator().manual_seed(seed)
         frames = self.pipe(prompt,
-                      num_inference_steps=num_inference_steps,
-                      num_frames=num_frames,
-                      generator=generator).frames
+                           num_inference_steps=num_inference_steps,
+                           num_frames=num_frames,
+                           generator=generator).frames
         return self.to_video(frames, 8)
 
     def gradio(self):
@@ -110,16 +110,15 @@ class ModelText2video(c.Module):
                                                     maximum=50,
                                                     step=1,
                                                     value=25)
-        
+
             inputs = [
                 prompt,
                 seed,
                 num_frames,
                 num_inference_steps,
             ]
-        
+
             prompt.submit(fn=self.generate, inputs=inputs, outputs=result)
             run_button.click(fn=self.generate, inputs=inputs, outputs=result)
-        
-                
+
         demo.queue(api_open=False, max_size=15).launch(share=True, quiet=True)
