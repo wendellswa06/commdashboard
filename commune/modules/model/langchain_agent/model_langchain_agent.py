@@ -10,6 +10,8 @@ from langchain.chains import LLMChain
 from langchain.agents import initialize_agent, AgentType, create_json_agent
 import gradio as gr
 
+
+
 class WebSurfingAgent(c.Module):
     def __init__(self):
         load_dotenv()
@@ -59,6 +61,7 @@ class WebSurfingAgent(c.Module):
     def search_the_web(self, query):
         results = self.agent.invoke(query)
         return results
+    
     def gradio(self):
         with gr.Blocks(title="Langchain Web Search Agent") as demo:
             with gr.Column():
