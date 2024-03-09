@@ -1,1 +1,15 @@
 # Steps to run Flask Application
+
+
+1. Clone the git repository
+
+`git clone https://github.com/wendellswa06/commdashboard'
+
+
+2. No need to change the environment (same as old environment)
+
+3. Open terminal in this folder
+`cd commdashboard/dashboard/new_ui`
+
+4. Run the flask app 
+`python app.py`
