@@ -1,0 +1,161 @@
+<!--
+     Date Created: 12/23/17
+     Date Revised: 12/26/17
+-->
+<!DOCTYPE html>
+<html>
+     <head>
+          <!-- Required meta tags -->
+          <meta charset="utf-8">
+          <meta http-equiv="X-UA-Compatible" content="IE=edge">
+          <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+          <!-- Title tag -->
+          <title>Dashboard</title>
+          <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='img/logo.png') }}">
+
+          <!-- Font awesome -->
+          <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+
+          <!-- Animate.css -->
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+
+          <!-- Normalize -->
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.css">
+
+          <!-- Custom CSS -->
+          <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
+          
+          <script src="https://cdn.tailwindcss.com"></script>
+          <link rel="text/tailwindcss" href="{{ url_for('static', filename='css/launcher_style.css') }}">
+
+          <style>
+               /* If you wish to remove the astonish.js file, then also be sure to remove these styles. */
+               .astonish {
+                    visibility: visible;
+               }
+
+               @media (min-width: 768px) {
+                    .astonish {
+                         visibility: hidden;
+                    }
+                    .animated {
+                         visibility: visible;
+                    }
+               }
+          </style>
+     </head>
+     <body>
+          <!-- Main Navigation -->
+          <nav class="border-gray-200" style="background-image: url('{{ url_for('static', filename='img/background.jpg') }}');">
+               <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+                 <a href="{{url_for('index')}}" class="flex items-center space-x-3 rtl:space-x-reverse">
+                   <!-- <img src="{{ url_for('static', filename='img/launcher.gif')}}" class="h-8" alt="Commune Logo" /> -->
+                   <video autoplay muted class="h-8" alt="Commune Logo">
+                     <source src="{{ url_for('static', filename='img/logo_launcher.mp4')}}" type="video/mp4">
+                     </video>
+                   <span class="self-center text-2xl font-semibold whitespace-nowrap text-white">Dashboard</span>
+                 </a>
+                 <button data-collapse-toggle="navbar-default" type="button"
+                   class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+                   aria-controls="navbar-default" aria-expanded="false">
+                   <span class="sr-only">Open main menu</span>
+                   <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
+                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                       d="M1 1h15M1 7h15M1 13h15" />
+                   </svg>
+                 </button>
+                 <div class="hidden w-full md:block md:w-auto" id="navbar-default">
+                   <ul
+                     class="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700" style="background-image: url('{{ url_for('static', filename='img/background.jpg') }}'); background-color:transparent;">
+                     <li>
+                       <a href="{{url_for('index')}}"
+                         class="block py-2 px-3 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+                         aria-current="page">Home</a>
+                     </li>
+                     <li>
+                       <a href="{{url_for('index')}}"
+                         class="block py-2 px-3 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">About</a>
+                     </li>
+                     <li>
+                       <a href="{{url_for('launcher')}}"
+                         class="block py-2 px-3 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Launcher</a>
+                     </li>
+                     <li>
+                       <a href="#"
+                         class="block py-2 px-3 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Contact</a>
+                     </li>
+                   </ul>
+                 </div>
+               </div>
+             </nav>
+
+          <!-- Main header -->
+          <header>
+               <!-- First replaceble image -->
+               <img class="img-absolute" src="{{ url_for('static', filename='img/background.jpg') }}" alt="Background">
+               <div class="wrapper astonish animated fadeInDown">
+                    <h1><strong>Dash</strong>Board</h1>
+                    <h2>Providing Instant Access to State of the Art Deep Learning Models</h2>
+                    <h2>Supported by Commune</h2>
+               </div>
+          </header>
+
+          <!-- Main content -->
+          <main>
+               <div class="content-wrapper" id="about">
+                    <!-- second replaceble image -->
+                    <img class="img-absolute" src="{{ url_for('static', filename='img/bg2.jpg') }}" alt="Background">
+                    <div class="grid">
+                         <div class="grid-col-sm-12 grid-col-md-6 astonish" data-animation="fadeInLeft">
+                              <h2 class="section-title">About Dashboard</h2>
+                              <p>Welcome to our dashboard powered by Gradio, where we bring you an unparalleled fusion of cutting-edge deep learning models at your fingertips. Our team is dedicated to revolutionizing the landscape of AI accessibility, empowering users from diverse backgrounds to harness the power of state-of-the-art models effortlessly.</p>
+                              <p>At the heart of our dashboard lies a curated selection of Gradio-powered models supported by Commune, meticulously crafted to address a spectrum of real-world challenges across text, image, video, and more. From natural language processing to computer vision, our suite of models caters to a wide array of applications, ensuring versatility and adaptability in your AI endeavors.</p>
+                            </div>
+                    </div>
+               </div>
+
+               <div id="reserve" class="content-wrapper-lg text-center astonish" data-animation="zoomIn">
+                <img class="img-absolute" src="{{ url_for('static', filename='img/bg3.jpg') }}" alt="Background">
+                <div>
+                  <h2 class="section-title">Access Model Launcher</h2>
+                    <p>CityScapes is great for any travel agency or tour agency, that wishes to showcase the focal points of a city. If you want a unique looking landing page that has a unique artistic style that will attract clients, then this is the template for you. Go ahead and download it for free from Github.</p>
+                    <a href="{{ url_for('launcher') }}" class="btn btn-outline-purple">Model Launcher</a>
+                </div>
+                
+               </div>
+
+               <!-- This is an embedded Google map, this is easily customizable especially if you get a Google API key, this will allow for more customizable features. -->
+               <!-- <center><iframe id="launcher" src="{{ url_for('launcher') }}" height=700px width=1650px></iframe></center> -->
+          </main>
+
+          <!-- Main footer -->
+          <footer>
+               <div class="content-wrapper-sm display-flex-between">
+                    <!-- Easily replaceble copyright information -->
+                    <small>Your copyright 2024.</small>
+
+                    <!-- Make sure to edit the links so that they go to your social media. -->
+                    <div class="social-links">
+                         <ul>
+                              <li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+                              <li><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+                              <li><a href="#"><i class="fa fa-snapchat-square" aria-hidden="true"></i></a></li>
+                              <li><a href="#"><i class="fa fa-instagram" aria-hidden="true"></i></a></li>
+                         </ul>
+                    </div>
+               </div>
+          </footer>
+
+          <!-- Scripts placed at the bottom for faster loading -->
+          <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+          <script src="{{ url_for('static', filename='js/menu.js') }}" charset="utf-8"></script>
+
+          <!-- Optional js files -->
+          <!-- Quick note: if you remove astonish, make sure you remove the embedded styles in the top -->
+          <script src="{{ url_for('static', filename='js/astonish.js') }}" charset="utf-8"></script>
+          <script src="{{ url_for('static', filename='js/nav.js') }}" charset="utf-8"></script>
+          <script src="{{ url_for('static', filename='js/scroll.js') }}" charset="utf-8"></script>
+
+     </body>
+</html>

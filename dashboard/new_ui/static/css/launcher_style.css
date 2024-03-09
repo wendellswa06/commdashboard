@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {}
+
+@layer components {
+  .container {
+    @apply sm:max-w-full md:max-w-[720px] lg:max-w-[960px] xl:max-w-[1140px] xxl:max-w-[1200px];
+    @apply p-screen;
+  }
+
+  .row {
+    @apply m-screen;
+  }
+}
+
+li:hover {
+  transform: scale(1.05);
+  /* Increase size on hover */
+  transition: transform 0.3s ease;
+  /* Smooth transition */
+  background: rgb(60, 59, 67);
+}
+
+@layer utilities {}
+

@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="text/tailwindcss" href="{{ url_for('static', filename='css/launcher_style.css') }}">
+  <title>Model Cards</title>
+  <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='img/logo.png') }}">
+</head>
+
+<body class="bg-primary" style="background-image: url('{{ url_for('static', filename='img/launcher_bg.jpg') }}');">
+  <div class="flex min-h-screen flex-col justify-center">
+
+
+    <nav class="border-gray-200" style="background-image: url('{{ url_for('static', filename='img/launcher_bg.jpg') }}');">
+      <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+        <a href="{{url_for('index')}}" class="flex items-center space-x-3 rtl:space-x-reverse">
+          <!-- <img src="{{ url_for('static', filename='img/launcher.gif')}}" class="h-8" alt="Commune Logo" /> -->
+          <video autoplay muted class="h-8" alt="Commune Logo">
+            <source src="{{ url_for('static', filename='img/logo_launcher.mp4')}}" type="video/mp4">
+            </video>
+          <span class="self-center text-2xl font-semibold whitespace-nowrap text-white">Dashboard</span>
+        </a>
+        <button data-collapse-toggle="navbar-default" type="button"
+          class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-green-700 dark:focus:ring-gray-600"
+          aria-controls="navbar-default" aria-expanded="false">
+          <span class="sr-only">Open main menu</span>
+          <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M1 1h15M1 7h15M1 13h15" />
+          </svg>
+        </button>
+        <div class="hidden w-full md:block md:w-auto" id="navbar-default">
+          <ul
+            class="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700" style="background-image: url('{{ url_for('static', filename='img/launcher_bg.jpg') }}'); background-color:transparent;">
+            <li>
+              <a href="{{url_for('index')}}"
+                class="block py-2 px-3 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+                aria-current="page">Home</a>
+            </li>
+            <li>
+              <a href="{{url_for('index')}}"
+                class="block py-2 px-3 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">About</a>
+            </li>
+            <li>
+              <a href="{{url_for('stopall')}}"
+                class="block py-2 px-3 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Stop
+                All</a>
+            </li>
+            <li>
+              <a href="#"
+                class="block py-2 px-3 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Contact</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <section class="career py-[50px]">
+      <div class="container p-screen">
+        <div class="row m-screen">
+          <div class="col-12 p-screen text-center mb-[40px] sm:mb-[16px]">
+            <h1 class="text-h1 text-white lg:text-4xl md:text-4xl sm:text-2xl">Select a model</h1>
+            <p class="text-[#94a3b8]  md:text-xl  sm:text-base">Select a model which you want to run</p>
+          </div>
+          <div class="col-12 p-screen">
+            <ul class="grid w-full gap-10 sm:gap-5 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 xxl:grid-cols-3">
+              <li class="relative">
+                <input type="radio" id="text2image" name="hosting" value="text2image" class="hidden peer" required />
+                <div class="hidden peer-checked:block absolute right-[25px] top-[18px]">
+                  <i class="fa fa-check-square-o text-[#19A7CE]" aria-hidden="true"></i>
+                </div>
+                <label for="text2image"
+                  class="block w-full h-full py-8 px-8 bg-gray-800 text-white border border-gray-200 rounded-lg cursor-pointer peer-checked:border-[lightred] peer-checked:text-lightred hover:bg-green-700">
+                  <a href="{{ url_for('loading', app_number=1) }}" class="block w-full h-full">
+                    <h3 class="text-2xl sm:text-lg mb-2">Text to Image Model</h3>
+                    <p class="text-lg sm:text-sm">Transform your words and ideas into captivating visuals with our Text
+                      to Image Converter. Explore endless possibilities as you turn quotes, slogans, headlines, or any
+                      written content into eye-catching graphics. Unlock your creativity and elevate your content with
+                      our intuitive Text to Image Converter.</p>
+                  </a>
+                </label>
+              </li>
+              <li class="relative">
+                <input type="radio" id="image2image" name="hosting" value="imag2image" class="hidden peer">
+                <div class="hidden peer-checked:block absolute right-[25px] top-[18px]">
+                  <i class="fa fa-check-square-o text-[#19A7CE]" aria-hidden="true"></i>
+                </div>
+                <label for="imag2image"
+                  class="block w-full h-full py-8 px-8 bg-gray-800 text-white border border-gray-200 rounded-lg cursor-pointer peer-checked:border-[lightred] peer-checked:text-lightred hover:bg-green-700">
+                  <a href="{{ url_for('loading', app_number=2) }}" class="block w-full h-full">
+                    <h3 class="text-2xl sm:text-lg mb-2">Image to Image Model</h3>
+                    <p class="text-lg sm:text-sm">Unlock the potential of our Image to Image Model, seamlessly
+                      transforming visuals to elevate your projects, whether it's enhancing photos, generating stunning
+                      imagery, or translating artistic styles, all while effortlessly unleashing your creativity.</p>
+                  </a>
+                </label>
+              </li>
+              <li class="relative">
+                <input type="radio" id="image2video" name="hosting" value="image2video" class="hidden peer">
+                <div class="hidden peer-checked:block absolute right-[25px] top-[18px]">
+                  <i class="fa fa-check-square-o text-[#19A7CE]" aria-hidden="true"></i>
+                </div>
+                <label for="image2video"
+                  class="block w-full h-full p-5  bg-gray-800  text-white  border border-gray-200 rounded-lg cursor-pointer  peer-checked:border-[lightred] peer-checked:text-lightred  hover:bg-green-700 ">
+                  <a href="{{ url_for('loading', app_number=3) }}" class="block w-full h-full">
+                    <h3 class="text-2xl sm:text-lg mb-2">Image to Video Model</h3>
+                    <p class="text-lg sm:text-sm ">Explore our Image to Video Model, effortlessly converting static
+                      images into dynamic video content. Unlock creative potential by seamlessly transforming visuals
+                      into captivating motion stories, slideshows, or engaging video montages. </p>
+                  </a>
+                </label>
+              </li>
+              <li class="relative">
+                <input type="radio" id="text2video" name="hosting" value="text2video" class="hidden peer">
+                <div class="hidden peer-checked:block absolute right-[25px] top-[18px]">
+                  <i class="fa fa-check-square-o text-[#19A7CE]" aria-hidden="true"></i>
+                </div>
+                <label for="text2video"
+                  class="block w-full h-full p-5  bg-gray-800  text-white  border border-gray-200 rounded-lg cursor-pointer  peer-checked:border-[lightred] peer-checked:text-lightred  hover:bg-green-700 ">
+                  <a href="{{ url_for('loading', app_number=4)}}" class="block w-full h-full">
+                    <h3 class="text-2xl sm:text-lg mb-2">Text to Video Model</h3>
+                    <p class="text-lg sm:text-sm ">Experience our Text to Video Model, transforming written content into
+                      dynamic video presentations. Seamlessly convert text into engaging video content, bringing your
+                      ideas to life with ease. With our model, unleash the power of storytelling through captivating
+                      visual narratives.</p>
+                  </a>
+                </label>
+              </li>
+              <li class="relative">
+                <input type="radio" id="yolo" name="hosting" value="yolo" class="hidden peer">
+                <div class="hidden peer-checked:block absolute right-[25px] top-[18px]">
+                  <i class="fa fa-check-square-o text-[#19A7CE]" aria-hidden="true"></i>
+                </div>
+                <label for="yolo"
+                  class="block w-full h-full p-5  bg-gray-800  text-white  border border-gray-200 rounded-lg cursor-pointer  peer-checked:border-[lightred] peer-checked:text-lightred  hover:bg-green-700 ">
+                  <a href="{{ url_for('loading', app_number=5) }}" class="block w-full h-full">
+                    <h3 class="text-2xl sm:text-lg mb-2">YOLO Model</h3>
+                    <p class="text-lg sm:text-sm ">Unlock the versatility of our YOLO (You Only Look Once) Model,
+                      offering comprehensive features such as segmentation and pose detection. Seamlessly integrate
+                      cutting-edge technology into your projects for precise object segmentation and accurate pose
+                      estimation. With our YOLO model, elevate your applications with efficient and robust real-time
+                      analysis capabilities.</p>
+                  </a>
+                </label>
+              </li>
+              <li class="relative">
+                <input type="radio" id="video2text" name="hosting" value="video2text" class="hidden peer">
+                <div class="hidden peer-checked:block absolute right-[25px] top-[18px]">
+                  <i class="fa fa-check-square-o text-[#19A7CE]" aria-hidden="true"></i>
+                </div>
+                <label for="video2text"
+                  class="block w-full h-full p-5  bg-gray-800  text-white  border border-gray-200 rounded-lg cursor-pointer  peer-checked:border-[lightred] peer-checked:text-lightred  hover:bg-green-700 ">
+                  <a href="{{ url_for('loading', app_number=6)}}" class="block w-full h-full">
+                    <h3 class="text-2xl sm:text-lg mb-2">Video to Text Model</h3>
+                    <p class="text-lg sm:text-sm ">Experience our Video to Text Model, effortlessly transcribing video
+                      content into accurate textual representations. Seamlessly convert spoken words and audiovisual
+                      data into readable text, enabling easy analysis and accessibility. With our model, unlock the
+                      power of extracting valuable insights and information from video content with precision and
+                      efficiency.</p>
+                  </a>
+                </label>
+              </li>
+              <li class="relative">
+                <input type="radio" id="image2text" name="hosting" value="image2text" class="hidden peer">
+                <div class="hidden peer-checked:block absolute right-[25px] top-[18px]">
+                  <i class="fa fa-check-square-o text-[#19A7CE]" aria-hidden="true"></i>
+                </div>
+                <label for="image2text"
+                  class="block w-full h-full p-5  bg-gray-800  text-white  border border-gray-200 rounded-lg cursor-pointer  peer-checked:border-[lightred] peer-checked:text-lightred  hover:bg-green-700 ">
+                  <a href="{{ url_for('loading', app_number=7)}}" class="block w-full h-full">
+                    <h3 class="text-2xl sm:text-lg mb-2">Image to Text Model</h3>
+                    <p class="text-lg sm:text-sm ">Discover our Image to Text Model, effortlessly extracting textual
+                      content from images with precision and efficiency. Seamlessly convert visual data into readable
+                      text, unlocking valuable insights and information. With our model, streamline data extraction
+                      processes and enhance accessibility across various applications.</p>
+                  </a>
+                </label>
+              </li>
+              <li class="relative">
+                <input type="radio" id="vector-store" name="hosting" value="vector-store" class="hidden peer">
+                <div class="hidden peer-checked:block absolute right-[25px] top-[18px]">
+                  <i class="fa fa-check-square-o text-[#19A7CE]" aria-hidden="true"></i>
+                </div>
+                <label for="vector-store"
+                  class="block w-full h-full p-5  bg-gray-800  text-white  border border-gray-200 rounded-lg cursor-pointer  peer-checked:border-[lightred] peer-checked:text-lightred  hover:bg-green-700 ">
+                  <a href="{{ url_for('loading', app_number=8)}}" class="block w-full h-full">
+                    <h3 class="text-2xl sm:text-lg mb-2">Vector Store</h3>
+                    <p class="text-lg sm:text-sm ">Explore our Vector Store Model, offering a comprehensive solution for
+                      efficient storage and retrieval of vector data. Seamlessly manage vast collections of vectors with
+                      ease, ensuring quick access and retrieval for various applications. With our model, optimize
+                      storage resources and streamline vector data management for enhanced performance and scalability.
+                    </p>
+                  </a>
+                </label>
+              </li>
+              <li class="relative">
+                <input type="radio" id="stable-tune" name="hosting" value="stable-tune" class="hidden peer">
+                <div class="hidden peer-checked:block absolute right-[25px] top-[18px]">
+                  <i class="fa fa-check-square-o text-[#19A7CE]" aria-hidden="true"></i>
+                </div>
+                <label for="stable-tune"
+                  class="block w-full h-full p-5  bg-gray-800  text-white  border border-gray-200 rounded-lg cursor-pointer  peer-checked:border-[lightred] peer-checked:text-lightred  hover:bg-green-700 ">
+                  <a href="{{ url_for('loading', app_number=9)}}" class="block w-full h-full">
+                    <h3 class="text-2xl sm:text-lg mb-2">StableTune</h3>
+                    <p class="text-lg sm:text-sm ">Delve into our Stable Tune Model, providing robust and reliable
+                      fine-tuning capabilities for enhanced performance. Seamlessly optimize and stabilize your machine
+                      learning models, ensuring consistent results across various datasets and scenarios. With our
+                      model, achieve greater accuracy and reliability in your model tuning processes.</p>
+                  </a>
+                </label>
+              </li>
+              <li class="relative">
+                <input type="radio" id="music-mixer" name="hosting" value="musix-mixer" class="hidden peer">
+                <div class="hidden peer-checked:block absolute right-[25px] top-[18px]">
+                  <i class="fa fa-check-square-o text-[#19A7CE]" aria-hidden="true"></i>
+                </div>
+                <label for="music-mixer"
+                  class="block w-full h-full p-5  bg-gray-800  text-white  border border-gray-200 rounded-lg cursor-pointer  peer-checked:border-[lightred] peer-checked:text-lightred  hover:bg-green-700 ">
+                  <a href="{{ url_for('loading', app_number=10)}}" class="block w-full h-full">
+                    <h3 class="text-2xl sm:text-lg mb-2">Music Mixer</h3>
+                    <p class="text-lg sm:text-sm ">Experience our Music Mixer Model, seamlessly blending musical tunes
+                      to create captivating compositions. Effortlessly combine melodies, rhythms, and harmonies to
+                      produce unique and harmonious soundscapes. With our model, unleash your creativity and explore
+                      endless possibilities in music creation and mixing.</p>
+                  </a>
+                </label>
+              </li>
+              <li class="relative">
+                <input type="radio" id="ocr" name="hosting" value="ocr" class="hidden peer">
+                <div class="hidden peer-checked:block absolute right-[25px] top-[18px]">
+                  <i class="fa fa-check-square-o text-[#19A7CE]" aria-hidden="true"></i>
+                </div>
+                <label for="ocr"
+                  class="block w-full h-full p-5  bg-gray-800  text-white  border border-gray-200 rounded-lg cursor-pointer  peer-checked:border-[lightred] peer-checked:text-lightred  hover:bg-green-700 ">
+                  <a href="{{ url_for('loading', app_number=11)}}" class="block w-full h-full">
+                    <h3 class="text-2xl sm:text-lg mb-2">OCR</h3>
+                    <p class="text-lg sm:text-sm ">Unlock the power of our OCR (Optical Character Recognition) Model,
+                      effortlessly converting printed or handwritten text into digital format. Seamlessly extract text
+                      from images or documents with high accuracy and efficiency. With our model, streamline data entry
+                      processes, enhance document management, and unlock valuable insights from scanned materials.</p>
+                  </a>
+                </label>
+              </li>
+              <li class="relative">
+                <input type="radio" id="music-gen" name="hosting" value="music-gen" class="hidden peer">
+                <div class="hidden peer-checked:block absolute right-[25px] top-[18px]">
+                  <i class="fa fa-check-square-o text-[#19A7CE]" aria-hidden="true"></i>
+                </div>
+                <label for="music-gen"
+                  class="block w-full h-full p-5  bg-gray-800  text-white  border border-gray-200 rounded-lg cursor-pointer  peer-checked:border-[lightred] peer-checked:text-lightred  hover:bg-green-700 ">
+                  <a href="{{ url_for('loading', app_number=12)}}" class="block w-full h-full">
+                    <h3 class="text-2xl sm:text-lg mb-2">Music gen</h3>
+                    <p class="text-lg sm:text-sm ">Discover our Music Generation Model, crafting original compositions
+                      with ease and creativity. Seamlessly generate melodies, harmonies, and rhythms, tailored to your
+                      preferences and style. With our model, explore endless possibilities in music creation and
+                      composition, whether you're a seasoned musician or a budding enthusiast</p>
+                  </a>
+                </label>
+              </li>
+              <li class="relative">
+                <input type="radio" id="stock" name="hosting" value="stock" class="hidden peer">
+                <div class="hidden peer-checked:block absolute right-[25px] top-[18px]">
+                  <i class="fa fa-check-square-o text-[#19A7CE]" aria-hidden="true"></i>
+                </div>
+                <label for="stock"
+                  class="block w-full h-full p-5  bg-gray-800  text-white  border border-gray-200 rounded-lg cursor-pointer  peer-checked:border-[lightred] peer-checked:text-lightred  hover:bg-green-700 ">
+                  <a href="{{ url_for('loading', app_number=13)}}" class="block w-full h-full">
+                    <h3 class="text-2xl sm:text-lg mb-2">Stock</h3>
+                    <p class="text-lg sm:text-sm ">Explore our Stock Model, leveraging advanced algorithms to analyze
+                      stock market data and predict trends with precision. Seamlessly navigate market fluctuations and
+                      make informed investment decisions based on reliable insights. With our model, optimize your
+                      trading strategies and unlock potential opportunities in the stock market.</p>
+                  </a>
+                </label>
+              </li>
+              <li class="relative">
+                <input type="radio" id="sentence" name="hosting" value="sentence" class="hidden peer">
+                <div class="hidden peer-checked:block absolute right-[25px] top-[18px]">
+                  <i class="fa fa-check-square-o text-[#19A7CE]" aria-hidden="true"></i>
+                </div>
+                <label for="sentence"
+                  class="block w-full h-full p-5  bg-gray-800  text-white  border border-gray-200 rounded-lg cursor-pointer  peer-checked:border-[lightred] peer-checked:text-lightred  hover:bg-green-700 ">
+                  <a href="{{ url_for('loading', app_number=14)}}" class="block w-full h-full">
+                    <h3 class="text-2xl sm:text-lg mb-2">Sentence</h3>
+                    <p class="text-lg sm:text-sm ">Our Sentence Model incorporates word embeddings to represent words in
+                      a multi-dimensional space, capturing semantic relationships. By leveraging this technique, we
+                      enhance the understanding of textual data, enabling more accurate analysis and interpretation.
+                      With word embeddings, our model efficiently encodes contextual information.</p>
+                  </a>
+                </label>
+              </li>
+              <li class="relative">
+                <input type="radio" id="langchain-agent" name="hosting" value="langchain-agent" class="hidden peer">
+                <div class="hidden peer-checked:block absolute right-[25px] top-[18px]">
+                  <i class="fa fa-check-square-o text-[#19A7CE]" aria-hidden="true"></i>
+                </div>
+                <label for="langchain-agent"
+                  class="block w-full h-full p-5  bg-gray-800  text-white  border border-gray-200 rounded-lg cursor-pointer  peer-checked:border-[lightred] peer-checked:text-lightred  hover:bg-green-700 ">
+                  <a href="{{ url_for('loading', app_number=15)}}" class="block w-full h-full">
+                    <h3 class="text-2xl sm:text-lg mb-2">Langchain Agent</h3>
+                    <p class="text-lg sm:text-sm ">The Langchain Agent facilitates seamless communication and
+                      integration between diverse programming languages. Leveraging its versatile architecture, it
+                      enables interoperability and data exchange across language barriers. Experience streamlined
+                      development and enhanced collaboration with the Langchain Agent.</p>
+                  </a>
+                </label>
+              </li>
+              <li class="relative">
+                <input type="radio" id="iamge-upscaler" name="hosting" value="image-upscaler" class="hidden peer">
+                <div class="hidden peer-checked:block absolute right-[25px] top-[18px]">
+                  <i class="fa fa-check-square-o text-[#19A7CE]" aria-hidden="true"></i>
+                </div>
+                <label for="image-upscaler"
+                  class="block w-full h-full p-5  bg-gray-800  text-white  border border-gray-200 rounded-lg cursor-pointer  peer-checked:border-[lightred] peer-checked:text-lightred  hover:bg-red-700 ">
+                  <a href="{{ url_for('loading', app_number=16)}}" class="block w-full h-full">
+                    <h3 class="text-2xl sm:text-lg mb-2">Image Upscaler</h3>
+                    <p class="text-lg sm:text-sm ">The Image Upscaler effortlessly enhances image resolution, clarity,
+                      and quality. Leveraging advanced algorithms, it intelligently upscales images while preserving
+                      details and minimizing artifacts. Experience sharper, more detailed images with our Image
+                      Upscaler.</p>
+                  </a>
+                </label>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</body>
+
+<!-- <script src="{{ url_for('static', filename='js/launcher_script.js') }}"></script> -->
+
+</html>
